@@ -199,10 +199,9 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                         line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
                         with open(txt_path + '.txt', 'a') as f:
                             #f.write(('%g ' * len(line)).rstrip() % line + '\n'
-                            #newConf2 = newConf.replace("tensor","").replace("(","").replace(")","")
-                            value = conf.item()
-                            newValue = '%.2f' % value
-                            f.write(str(newValue) + '\n')
+                            value = conf.item() # porque tiene solo un elemento (devuelve el elemento y su tipo, en este caso, float)
+                            newValue = '%.2f' % value # formatear a solo 2 digitos el float
+                            f.write(str(newValue) + '\n') #se escribe con tipo string
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
