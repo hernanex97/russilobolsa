@@ -200,7 +200,7 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                         with open(txt_path + '.txt', 'a') as f:
                             #f.write(('%g ' * len(line)).rstrip() % line + '\n'
                             confList = conf.tolist()
-                            confNumber = "%.2f" % round(confList[0].item(), 2)
+                            confNumber = str("%.2f" % round(confList[0], 2))
                             f.write(confNumber + '\n')
 
                     if save_img or save_crop or view_img:  # Add bbox to image
