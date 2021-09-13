@@ -198,10 +198,10 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                         line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
                         with open(txt_path + '.txt', 'a') as f:
-                            #f.write(('%g ' * len(line)).rstrip() % line + '\n')
-                            newConf = str(conf[0])
-                            newConf2 = newConf.replace("tensor","").replace("(","").replace(")","")
-                            f.write(newConf2 + '\n')
+                            #f.write(('%g ' * len(line)).rstrip() % line + '\n'
+                            confList = conf.tolist()
+                            confNumber = "%.2f" % round(confList[0].item(), 2)
+                            f.write(confNumber + '\n')
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
