@@ -201,7 +201,8 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                             #f.write(('%g ' * len(line)).rstrip() % line + '\n'
                             #newConf2 = newConf.replace("tensor","").replace("(","").replace(")","")
                             value = conf.item()
-                            f.write(str(value).format('%.2f') + '\n')
+                            newValue = str(value).format(round(value, 2))
+                            f.write(newValue + '\n')
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
