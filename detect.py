@@ -221,7 +221,10 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                         newValue = '%.2f' % value # formatear a solo 2 digitos el float
                         sumValues += newValue
 
-                        minValue = newValue if(newValue <= minValue) else maxValue = newValue
+                        if(newValue <= minValue):
+                            minValue = newValue
+                        else:
+                            maxValue = newValue
                         #    f.write(str(newValue) + '\n') #se escribe con tipo string
 
                     if save_img or save_crop or view_img:  # Add bbox to image
@@ -233,7 +236,11 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
 
             # Custom Values Results       
             with open(txt_path + '.txt', 'a') as f:
-                averageVal = sumValues/cantValues if (cantValues != 0) else sumValues
+                if (cantValues != 0):
+                    averageVal = sumValues/cantValues  
+                else: 
+                    sumValues
+                    
                 if(cantValues != 0):
                     existsSiloBolsa = True
                     f.write(str(existsSiloBolsa) + ',' + str(cantValues) + ',' + str(minValue) + ',' + str(maxValue) + ',' + str(averageVal) + '\n') #se esc
