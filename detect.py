@@ -10,6 +10,7 @@ import argparse
 import sys
 import time
 from pathlib import Path
+from PIL.Image import new
 
 import cv2
 import numpy as np
@@ -169,7 +170,17 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
         if classify:
             pred = apply_classifier(pred, modelc, img, im0s)
 
+        
+
         # Process predictions
+
+        # Custom results
+        existsSiloBolsa = False
+        cantValues = 0  # cant de silo bolsas
+        sumValues = 0.0 # suma de total confianza
+        minValue = 2.0 # mínimo valor de todos los valores de confianza obtenidos de una imágen
+        maxValue = 0.0 # máximo valor de todos los valores de confianza obtenidos de una imágen
+
         for i, det in enumerate(pred):  # detections per image
             if webcam:  # batch_size >= 1
                 p, s, im0, frame = path[i], f'{i}: ', im0s[i].copy(), dataset.count
@@ -192,16 +203,26 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                     n = (det[:, -1] == c).sum()  # detections per class
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
 
+
+                
+
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
+                    cantValues += 1 # suma de uno en uno las veces que se encuentra silo bolsa
                     if save_txt:  # Write to file
                         xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                         line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
-                        with open(txt_path + '.txt', 'a') as f:
-                            #f.write(('%g ' * len(line)).rstrip() % line + '\n'
-                            value = conf.item() # porque tiene solo un elemento (devuelve el elemento y su tipo, en este caso, float)
-                            newValue = '%.2f' % value # formatear a solo 2 digitos el float
-                            f.write(str(newValue) + '\n') #se escribe con tipo string
+
+                        
+
+                        #with open(txt_path + '.txt', 'a') as f:
+                        #    #f.write(('%g ' * len(line)).rstrip() % line + '\n'
+                        value = conf.item() # porque tiene solo un elemento (devuelve el elemento y su tipo, en este caso, float)
+                        newValue = '%.2f' % value # formatear a solo 2 digitos el float
+                        sumValues += newValue
+
+                        minValue = newValue if(newValue <= minValue) else maxValue = newValue
+                        #    f.write(str(newValue) + '\n') #se escribe con tipo string
 
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
@@ -209,6 +230,15 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                         annotator.box_label(xyxy, label, color=colors(c, True))
                         if save_crop:
                             save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
+
+            # Custom Values Results       
+            with open(txt_path + '.txt', 'a') as f:
+                averageVal = sumValues/cantValues if (cantValues != 0) else sumValues
+                if(cantValues != 0):
+                    existsSiloBolsa = True
+                    f.write(str(existsSiloBolsa) + ',' + str(cantValues) + ',' + str(minValue) + ',' + str(maxValue) + ',' + str(averageVal) + '\n') #se esc
+
+
 
             # Print time (inference + NMS)
             print(f'{s}Done. ({t2 - t1:.3f}s)')
