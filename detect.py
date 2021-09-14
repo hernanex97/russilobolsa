@@ -236,13 +236,12 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
 
             # Custom Values Results       
             with open(txt_path + '.txt', 'a') as f:
-                if (cantValues != 0):
-                    averageVal = sumValues/cantValues  
-                else: 
-                    sumValues
-
                 if(cantValues != 0):
+                    if(cantValues==1):
+                        maxValue=minValue
+                    
                     existsSiloBolsa = True
+                    averageVal = sumValues/cantValues  
                     f.write(str(existsSiloBolsa) + ',' + str(cantValues) + ',' + str('%.2f' % minValue) + ',' + str('%.2f' % maxValue) + ',' + str('%.2f' % averageVal) + ',' + txt_path + '\n') #se esc
                 else:
                     existsSiloBolsa = False
