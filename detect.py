@@ -218,7 +218,7 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                         #with open(txt_path + '.txt', 'a') as f:
                         #    #f.write(('%g ' * len(line)).rstrip() % line + '\n'
                         value = conf.item() # porque tiene solo un elemento (devuelve el elemento y su tipo, en este caso, float)
-                        newValue = '%.2f' % value # formatear a solo 2 digitos el float
+                        newValue = value # formatear a solo 2 digitos el float
                         sumValues += newValue
 
                         if(newValue <= minValue):
@@ -240,10 +240,10 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                     averageVal = sumValues/cantValues  
                 else: 
                     sumValues
-                    
+
                 if(cantValues != 0):
                     existsSiloBolsa = True
-                    f.write(str(existsSiloBolsa) + ',' + str(cantValues) + ',' + str(minValue) + ',' + str(maxValue) + ',' + str(averageVal) + '\n') #se esc
+                    f.write(str(existsSiloBolsa) + ',' + str(cantValues) + ',' + str('%.2f' % minValue) + ',' + str('%.2f' % maxValue) + ',' + str('%.2f' % averageVal) + '\n') #se esc
 
 
 
