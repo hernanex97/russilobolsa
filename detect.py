@@ -242,10 +242,10 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                     
                     existsSiloBolsa = True
                     averageVal = sumValues/cantValues  
-                    f.write(str(existsSiloBolsa) + ',' + str(cantValues) + ',' + str('%.2f' % minValue) + ',' + str('%.2f' % maxValue) + ',' + str('%.2f' % averageVal) + ',' + txt_path + '\n') #se esc
+                    f.write(str(existsSiloBolsa) + ',' + str(cantValues) + ',' + str('%.2f' % minValue) + ',' + str('%.2f' % maxValue) + ',' + str('%.2f' % averageVal) + ',' + p.name + '\n') #se esc
                 else:
                     existsSiloBolsa = False
-                    f.write(str(existsSiloBolsa) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + txt_path + '\n') #se 
+                    f.write(str(existsSiloBolsa) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + p.name + '\n') #se 
 
 
 
