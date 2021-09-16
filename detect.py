@@ -180,8 +180,9 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
         sumValues = 0.0 # suma de total confianza
         minValue = 2.0 # mínimo valor de todos los valores de confianza obtenidos de una imágen
         maxValue = 0.0 # máximo valor de todos los valores de confianza obtenidos de una imágen
-
+        newID = 0
         for i, det in enumerate(pred):  # detections per image
+            newID = newID + 1
             if webcam:  # batch_size >= 1
                 p, s, im0, frame = path[i], f'{i}: ', im0s[i].copy(), dataset.count
             else:
@@ -235,6 +236,7 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                             save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
 
             # Custom Values Results       
+            #hacer id aca y escribirlo en el txt
             with open(txt_path + '.txt', 'a') as f:
                 if(cantValues != 0):
                     if(cantValues==1):
@@ -242,10 +244,10 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                     
                     existsSiloBolsa = True
                     averageVal = sumValues/cantValues  
-                    f.write(str(existsSiloBolsa) + ',' + str(cantValues) + ',' + str('%.2f' % minValue) + ',' + str('%.2f' % maxValue) + ',' + str('%.2f' % averageVal) + ',' + p.name + '\n') #se esc
+                    f.write(str(newID) + ',' + str(existsSiloBolsa) + ',' + str(cantValues) + ',' + str('%.2f' % minValue) + ',' + str('%.2f' % maxValue) + ',' + str('%.2f' % averageVal) + ',' + p.name + '\n') #se esc
                 else:
                     existsSiloBolsa = False
-                    f.write(str(existsSiloBolsa) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + p.name + '\n') #se 
+                    f.write(str(newID) + ',' + str(existsSiloBolsa) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + str(0) + ',' + p.name + '\n') #se 
 
 
 
