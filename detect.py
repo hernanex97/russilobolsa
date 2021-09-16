@@ -67,6 +67,9 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
     device = select_device(device)
     half &= device.type != 'cpu'  # half precision only supported on CUDA
 
+    #Initialize newID
+    newID = 0
+
     # Load model
     w = weights[0] if isinstance(weights, list) else weights
     classify, suffix = False, Path(w).suffix.lower()
@@ -123,6 +126,9 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
     if pt and device.type != 'cpu':
         model(torch.zeros(1, 3, *imgsz).to(device).type_as(next(model.parameters())))  # run once
     t0 = time.time()
+
+
+
     for path, img, im0s, vid_cap in dataset:
         if onnx:
             img = img.astype('float32')
@@ -180,7 +186,7 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
         sumValues = 0.0 # suma de total confianza
         minValue = 2.0 # mínimo valor de todos los valores de confianza obtenidos de una imágen
         maxValue = 0.0 # máximo valor de todos los valores de confianza obtenidos de una imágen
-        newID = 0
+        
         for i, det in enumerate(pred):  # detections per image
             newID = newID + 1
             if webcam:  # batch_size >= 1
@@ -237,7 +243,6 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
 
             # Custom Values Results       
             #hacer id aca y escribirlo en el txt
-            print(newID)
             with open(txt_path + '.txt', 'a') as f:
                 if(cantValues != 0):
                     if(cantValues==1):
