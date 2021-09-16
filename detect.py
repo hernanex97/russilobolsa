@@ -240,15 +240,15 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
             # Custom Values Results       
             #hacer id aca y escribirlo en el txt
             with open(txt_path + '.txt', 'a') as f:
+                name2 = p.name.replace('.txt',"")
+                socio_lat_long = name2.replace('_',',')
+
                 if(cantValues != 0):
                     if(cantValues==1):
                         maxValue=minValue
                     
                     existsSiloBolsa = True
                     averageVal = sumValues/cantValues  
-
-                    name2 = p.name.replace('.txt',"")
-                    socio_lat_long = name2.replace('_',',')
 
                     f.write(socio_lat_long + str(existsSiloBolsa) + ',' + str(cantValues) + ',' + str('%.2f' % minValue) + ',' + str('%.2f' % maxValue) + ',' + str('%.2f' % averageVal) + ',' + p.name + '\n') #se esc
                 else:
